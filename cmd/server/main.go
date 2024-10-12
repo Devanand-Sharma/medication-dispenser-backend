@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/Devanand-Sharma/medication-dispenser-backend/pkg/handlers"
+	"github.com/Devanand-Sharma/medication-dispenser-backend/internal/handlers"
 	"github.com/gin-gonic/gin"
 )
 

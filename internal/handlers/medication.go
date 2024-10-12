@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/Devanand-Sharma/medication-dispenser-backend/pkg/database"
-	"github.com/Devanand-Sharma/medication-dispenser-backend/pkg/models"
+	"github.com/Devanand-Sharma/medication-dispenser-backend/internal/database"
+	"github.com/Devanand-Sharma/medication-dispenser-backend/internal/models"
 	"github.com/gin-gonic/gin"
 )
 
