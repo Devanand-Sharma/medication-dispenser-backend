@@ -15,9 +15,6 @@ func Connect() *gorm.DB {
 	// Load Config
 	cfg := database.LoadConfig()
 
-	// Print Config
-	// fmt.Printf("DBUser: %v, DBPassword: %v, DBName: %v, DBHost: %v, DBPort: %v\n", cfg.DBUser, cfg.DBPassword, cfg.DBName, cfg.DBHost, cfg.DBPort)
-
 	// Create DSN String
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=America/Toronto", cfg.DBHost, cfg.DBUser, cfg.DBPassword, cfg.DBName, cfg.DBPort)
 

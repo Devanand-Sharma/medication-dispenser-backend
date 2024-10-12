@@ -57,9 +57,9 @@ type Dosage struct {
 	gorm.Model
 	Frequency         MedicationFrequency `gorm:"not null"`
 	FrequencyCount    int
-	ScheduledTimes    []ScheduledTime
-	AdministeredTimes []AdministeredTime
-	StartDate         time.Time `gorm:"not null"`
+	ScheduledTimes    []ScheduledTime    `gorm:"constraint:OnDelete:CASCADE;"`
+	AdministeredTimes []AdministeredTime `gorm:"constraint:OnDelete:CASCADE;"`
+	StartDate         time.Time          `gorm:"not null"`
 	EndDate           time.Time
 	IsReminder        bool
 	MedicationID      uint
@@ -73,11 +73,11 @@ type RefillDate struct {
 
 type Prescription struct {
 	gorm.Model
-	TotalQuantity     int `gorm:"not null"`
-	RemainingQuantity int `gorm:"not null"`
-	ThresholdQuantity int `gorm:"not null"`
-	RefillDates       []RefillDate
-	IsRefillReminder  bool `gorm:"not null"`
+	TotalQuantity     int          `gorm:"not null"`
+	RemainingQuantity int          `gorm:"not null"`
+	ThresholdQuantity int          `gorm:"not null"`
+	RefillDates       []RefillDate `gorm:"constraint:OnDelete:CASCADE;"`
+	IsRefillReminder  bool         `gorm:"not null"`
 	MedicationID      uint
 }
 
@@ -87,9 +87,8 @@ type Medication struct {
 	Condition    string          `gorm:"not null"`
 	Route        MedicationRoute `gorm:"not null"`
 	Dose         int             `gorm:"not null"`
-	Prescription Prescription
-	Dosage       Dosage
+	Prescription Prescription    `gorm:"constraint:OnDelete:CASCADE;"`
+	Dosage       Dosage          `gorm:"constraint:OnDelete:CASCADE;"`
 	Instructions string
-	Image        string
 	Color        string
 }
