@@ -41,54 +41,48 @@ const (
 
 type ScheduledTime struct {
 	gorm.Model
-	Time     time.Time `gorm:"not null"`
-	DosageID uint
+	Time time.Time `json:"time" gorm:"not null"`
+
+	// Many-to-one relationship with Medication
+	MedicationID uint `json:"medication_id" gorm:"not null"`
 }
 
 type AdministeredTime struct {
 	gorm.Model
-	Time       time.Time          `gorm:"not null"`
-	Status     AdministeredStatus `gorm:"not null"`
-	IsReminder bool               `gorm:"not null"`
-	DosageID   uint
-}
+	Time   time.Time          `gorm:"not null"`
+	Status AdministeredStatus `gorm:"not null"`
 
-type Dosage struct {
-	gorm.Model
-	Frequency         MedicationFrequency `gorm:"not null"`
-	FrequencyCount    int
-	ScheduledTimes    []ScheduledTime    `gorm:"constraint:OnDelete:CASCADE;"`
-	AdministeredTimes []AdministeredTime `gorm:"constraint:OnDelete:CASCADE;"`
-	StartDate         time.Time          `gorm:"not null"`
-	EndDate           time.Time
-	IsReminder        bool
-	MedicationID      uint
+	// Many-to-one relationship with Medication
+	MedicationID uint `gorm:"not null;unique"`
 }
 
 type RefillDate struct {
 	gorm.Model
-	Date           time.Time `gorm:"not null"`
-	PrescriptionID uint
-}
+	Date time.Time `gorm:"not null"`
 
-type Prescription struct {
-	gorm.Model
-	TotalQuantity     int          `gorm:"not null"`
-	RemainingQuantity int          `gorm:"not null"`
-	ThresholdQuantity int          `gorm:"not null"`
-	RefillDates       []RefillDate `gorm:"constraint:OnDelete:CASCADE;"`
-	IsRefillReminder  bool         `gorm:"not null"`
-	MedicationID      uint
+	// Many-to-one relationship with Medication
+	MedicationID uint `gorm:"not null;unique"`
 }
 
 type Medication struct {
 	gorm.Model
-	Name         string          `gorm:"not null"`
-	Condition    string          `gorm:"not null"`
-	Route        MedicationRoute `gorm:"not null"`
-	Dose         int             `gorm:"not null"`
-	Prescription Prescription    `gorm:"constraint:OnDelete:CASCADE;"`
-	Dosage       Dosage          `gorm:"constraint:OnDelete:CASCADE;"`
-	Instructions string
-	Color        string
+	Name              string              `json:"name" gorm:"not null"`
+	Condition         string              `json:"condition" gorm:"not null"`
+	Route             MedicationRoute     `json:"route" gorm:"not null"`
+	Dose              int                 `json:"dose" gorm:"not null"`
+	TotalQuantity     int                 `json:"total_quantity" gorm:"not null"`
+	RemainingQuantity int                 `json:"remaining_quantity" gorm:"not null"`
+	ThresholdQuantity int                 `json:"threshold_quantity" gorm:"not null"`
+	IsRefillReminder  bool                `json:"is_refill_reminder" gorm:"not null"`
+	Frequency         MedicationFrequency `json:"frequency" gorm:"not null"`
+	FrequencyCount    *int                `json:"frequency_count"`
+	StartDate         time.Time           `json:"start_date" gorm:"not null"`
+	EndDate           *time.Time          `json:"end_date"`
+	IsReminder        bool                `json:"is_reminder" gorm:"not null"`
+	Instructions      string              `json:"instructions"`
+
+	// One-to-many relationship with RefillDate
+	ScheduledTimes    []ScheduledTime    `json:"scheduled_times" gorm:"constraint:OnDelete:CASCADE;"`
+	AdministeredTimes []AdministeredTime `json:"administered_times" gorm:"constraint:OnDelete:CASCADE;"`
+	RefillDates       []RefillDate       `json:"refill_dates" gorm:"constraint:OnDelete:CASCADE;"`
 }
