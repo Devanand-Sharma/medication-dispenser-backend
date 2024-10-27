@@ -2,7 +2,6 @@ package database
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/Devanand-Sharma/medication-dispenser-backend/internal/models"
 	"github.com/Devanand-Sharma/medication-dispenser-backend/pkg/database"
@@ -30,12 +29,11 @@ func Connect() *gorm.DB {
 func Migrate(db *gorm.DB) {
 	err := db.AutoMigrate(
 		&models.Medication{},
-		&models.Prescription{},
 		&models.RefillDate{},
-		&models.Dosage{},
+		&models.ScheduledTime{},
 		&models.AdministeredTime{},
 	)
 	if err != nil {
-		log.Fatalf("Failed to migrate database: %v", err)
+		fmt.Printf("Failed to migrate database: %v", err)
 	}
 }
