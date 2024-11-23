@@ -5,9 +5,6 @@ import (
 )
 
 func main() {
-	// Connect to the database
 	db := database.Connect()
-
-	// Migrate the schema
 	database.Migrate(db)
 }

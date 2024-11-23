@@ -66,22 +66,22 @@ type RefillDate struct {
 
 type Medication struct {
 	gorm.Model
-	Name              string              `json:"name" gorm:"not null"`
-	Condition         string              `json:"condition" gorm:"not null"`
-	Route             MedicationRoute     `json:"route" gorm:"not null"`
-	Dose              int                 `json:"dose" gorm:"not null"`
-	TotalQuantity     int                 `json:"total_quantity" gorm:"not null"`
-	RemainingQuantity int                 `json:"remaining_quantity" gorm:"not null"`
-	ThresholdQuantity int                 `json:"threshold_quantity" gorm:"not null"`
-	IsRefillReminder  bool                `json:"is_refill_reminder" gorm:"not null"`
-	Frequency         MedicationFrequency `json:"frequency" gorm:"not null"`
-	FrequencyCount    *int                `json:"frequency_count"`
-	StartDate         time.Time           `json:"start_date" gorm:"not null"`
+	Name              string              `json:"name" binding:"required" gorm:"not null"`
+	Condition         string              `json:"condition" binding:"required" gorm:"not null"`
+	Route             MedicationRoute     `json:"route" binding:"required" gorm:"not null"`
+	Dose              int                 `json:"dose" binding:"required,min=1" gorm:"not null"`
+	TotalQuantity     int                 `json:"total_quantity" binding:"required,min=1" gorm:"not null"`
+	RemainingQuantity int                 `json:"remaining_quantity" binding:"required" gorm:"not null"`
+	ThresholdQuantity int                 `json:"threshold_quantity" binding:"required" gorm:"not null"`
+	IsRefillReminder  bool                `json:"is_refill_reminder" binding:"required" gorm:"not null"`
+	Frequency         MedicationFrequency `json:"frequency" binding:"gte=0,lte=6" gorm:"not null"`
+	FrequencyCount    *int                `json:"frequency_count" binding:"omitempty,min=1"`
+	StartDate         time.Time           `json:"start_date" binding:"required" gorm:"not null"`
 	EndDate           *time.Time          `json:"end_date"`
-	IsReminder        bool                `json:"is_reminder" gorm:"not null"`
+	IsReminder        bool                `json:"is_reminder" binding:"required" gorm:"not null"`
 	Instructions      string              `json:"instructions"`
 
-	// One-to-many relationship with RefillDate
+	// One-to-many relationships
 	ScheduledTimes    []ScheduledTime    `json:"scheduled_times" gorm:"constraint:OnDelete:CASCADE;"`
 	AdministeredTimes []AdministeredTime `json:"administered_times" gorm:"constraint:OnDelete:CASCADE;"`
 	RefillDates       []RefillDate       `json:"refill_dates" gorm:"constraint:OnDelete:CASCADE;"`
